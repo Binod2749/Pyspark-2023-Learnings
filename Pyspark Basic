@@ -7,3 +7,26 @@ spark = SparkSession.builder.appName('SparkByExamples.com').getOrCreate()
 #Creates Empty RDD
 emptyRDD = spark.sparkContext.emptyRDD()
 print(emptyRDD)
+
+
+
+people = spark.createDataFrame([
+    {"deptId": 1,  "salary": 50},
+    {"deptId": 1,  "salary": 100},
+    {"deptId": 2,  "salary": 150},
+    {"deptId": 3,  "salary": 200},
+    {"deptId": '',  "salary": 200},
+    {"deptId": 4,  "salary": 200}
+])
+
+department = spark.createDataFrame([
+    {"id": 1, "name": "PySpark"},
+    {"id": 2, "name": "ML"},
+    {"id": 5, "name": "ML"},
+    {"id": 3, "name": "Spark SQL"}
+])
+
+
+people.join(department , people.deptId == department.id , 'left').select(people.deptId, department.id).sort(people.deptId).show()
+
+
