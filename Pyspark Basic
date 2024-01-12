@@ -10,6 +10,87 @@ print(emptyRDD)
 
 
 
+
+import pandas as pd 
+import pyspark as pyspark
+from pyspark.sql import SparkSession
+spark = SparkSession.builder.master("local[1]") \
+                    .appName('binod1.com') \
+                    .getOrCreate()
+
+data = [("James","Smith","USA","CA"),
+        ("Binod","Mahto","Tarmi","BK"),
+    ("Michael","Rose","USA","NY"),
+    ("Robert","Williams","USA","CA"),
+    ("Maria","Jones","USA","FL")
+  ]
+columns = ["firstname","lastname","country","state"]
+df = spark.createDataFrame(data = data, schema = columns)
+df.show(truncate=False)
+
+
+
+import pyspark
+
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.master('Local').appName('Binod').getOrCreate()
+
+data = [('123456789123456789123456789' , '8'),
+        ('123456789123456789123456789' , '8'),
+        ('123456789123456789123456789' , '8'),
+        ('123456789123456789123456789' , '8')]
+schema = ['NAme', 'class']
+
+df = spark.createDataFrame(data= data ,schema= schema )
+
+
+df.show()
+df.show(2)
+df.show(truncate=False)
+df.show(truncate=True)
+df.show(truncate=8)
+df.show(vertical=True)
+df.show(2)
+df.printSchema()
+
+import pyspark
+
+from pyspark.sql import *
+
+print('Diaplaying People DF')
+people = spark.createDataFrame([
+    {"deptId": 1, "age": 40, "name": "Hyukjin Kwon", "gender": "M", "salary": 50},
+    {"deptId": 1, "age": 50, "name": "Takuya Ueshin", "gender": "M", "salary": 100},
+    {"deptId": 2, "age": 60, "name": "Xinrong Meng", "gender": "F", "salary": 150},
+    {"deptId": 3, "age": 20, "name": "Haejoon Lee", "gender": "M", "salary": 200}
+])
+
+department = spark.createDataFrame([
+    {"id": 1, "name": "PySpark"},
+    {"id": 2, "name": "ML"},
+    {"id": 3, "name": "Spark SQL"}
+])
+
+
+people.filter(people.age > 30).join(
+    department, people.deptId == department.id).groupBy(
+    department.name, "gender").agg({"salary": "avg", "age": "max"}).show()
+
+
+
+
+people.filter(people.age > 30).join(
+    department, people.deptId == department.id).show()   
+
+
+
+
+
+
+
+
+
 people = spark.createDataFrame([
     {"deptId": 1,  "salary": 50},
     {"deptId": 1,  "salary": 100},
@@ -28,5 +109,8 @@ department = spark.createDataFrame([
 
 
 people.join(department , people.deptId == department.id , 'left').select(people.deptId, department.id).sort(people.deptId).show()
+
+
+
 
 
